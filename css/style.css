@@ -13,7 +13,7 @@ body {
   #draggable-resizable {
     width: 200px;
     height: 200px;
-    background-color: #f00;
+    background-color: #ffff;
     color: #fff;
     padding: 20px;
     position: absolute;
