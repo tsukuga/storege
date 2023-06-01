@@ -1,0 +1,36 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #215449;
+    border: 20px solid #6f4c3a;
+  }
+  
+  #draggable-resizable {
+    width: 200px;
+    height: 200px;
+    background-color: #f00;
+    color: #fff;
+    padding: 20px;
+    position: absolute;
+    cursor: move;
+  }
+  
+  #resize-handle {
+    width: 20px;
+    height: 20px;
+    background-color: #00f;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    cursor: se-resize;
+    display: none;
+  }
+  
+  #draggable-resizable:hover #resize-handle {
+    display: block;
+  }
