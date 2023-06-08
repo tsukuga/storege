@@ -7,9 +7,85 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+  <div id="outputarea"></div>
   <div id="draggable-resizable">
     <div id="resize-handle" class="handle"></div>
   </div>
+  <div id="input-area">
+    <div id="input-wrapper">
+        <input type="text" id="uname">
+        <textarea id="text" cols="30" rows="5"></textarea>
+        <button id="send">▷</button>
+        <button id="del">▷</button>
+    </div>
+  </div>
   <script src="js/index.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js";
+    import { getDatabase, ref, push, set, onChildAdded, remove, onChildRemoved }
+        from "https://www.gstatic.com/firebasejs/9.1.0/firebase-database.js";
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+            apiKey: "AIzaSyBbxM2za-jnDNBYKRON2IPVhYBIgVIS68c",
+            authDomain: "gsdev0603-6f0b1.firebaseapp.com",
+            projectId: "gsdev0603-6f0b1",
+            storageBucket: "gsdev0603-6f0b1.appspot.com",
+            messagingSenderId: "176053651897",
+            appId: "1:176053651897:web:fcb5ef5f8944f53d148e68"
+        };
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app); //RealtimeDBに接続
+    const dbRef = ref(db, "chat"); //RealtimeDB内の"chat"を使う
+
+    //データ登録(Click)
+    $("#send").on("click", function () {
+        const msg = {
+            uname: $("#uname").val(),
+            text: $("#text").val()
+        }
+        const newPostRef = push(dbRef); //ユニークKEYを生成
+        set(newPostRef, msg);           //"chat"にユニークKEYをつけてオブジェクトデータを登録
+    });
+
+    //データ登録(Enter)
+    $("#text").on("keydown", function (e) {
+        console.log(e);        //e変数の中身を確認！！
+        if (e.keyCode == 13) {   //EnterKey=13
+            const msg = {
+                uname: $("#uname").val(),
+                text: $("#text").val()
+            }
+            const newPostRef = push(dbRef); //ユニークKEYを生成
+            set(newPostRef, msg);           //"chat"にユニークKEYをつけてオブジェクトデータを登録
+        }
+    });
+
+    //データ登録(Enter)
+    $("#output").on("mouseenter", function () {
+        const msg = {
+            uname: $("#uname").val(),
+            text: $("#text").val()
+        }
+        const newPostRef = push(dbRef); //ユニークKEYを生成
+        set(newPostRef, msg);           //"chat"にユニークKEYをつけてオブジェクトデータを登録
+    });
+
+
+    //最初にデータ取得＆onSnapshotでリアルタイムにデータを取得
+    onChildAdded(dbRef, function (data) {
+      const msg = data.val();    //オブジェクトデータを取得し、変数msgに代入
+      const key = data.key;      //データのユニークキー（削除や更新に使用可能）
+      var h = $("<h1></h1>")
+      .text("ID: " + key + ", Message: " + msg.text)
+      .attr('id', key)
+      .on('mouseenter', function(dbRef) {
+        dbRef.equalTo(key).remove()
+      });
+      $("#outputarea").append(h); //#outputの最後に追加
+    });
+
+</script>
 </body>
 </html>

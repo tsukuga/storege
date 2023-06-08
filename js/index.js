@@ -94,3 +94,5 @@ function getCoords(elem) {
     left: box.left + window.pageXOffset
   };
 }
+
+
