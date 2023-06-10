@@ -28,6 +28,12 @@
         from "https://www.gstatic.com/firebasejs/9.1.0/firebase-database.js";
     // Your web app's Firebase configuration
     const firebaseConfig = {
+            apiKey: "AIzaSyBbxM2za-jnDNBYKRON2IPVhYBIgVIS68c",
+            authDomain: "gsdev0603-6f0b1.firebaseapp.com",
+            projectId: "gsdev0603-6f0b1",
+            storageBucket: "gsdev0603-6f0b1.appspot.com",
+            messagingSenderId: "176053651897",
+            appId: "1:176053651897:web:fcb5ef5f8944f53d148e68"
         };
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app); //RealtimeDBに接続
@@ -57,13 +63,8 @@
     });
 
     //データ登録(Enter)
-    $("#output").on("mouseenter", function () {
-        const msg = {
-            uname: $("#uname").val(),
-            text: $("#text").val()
-        }
-        const newPostRef = push(dbRef); //ユニークKEYを生成
-        set(newPostRef, msg);           //"chat"にユニークKEYをつけてオブジェクトデータを登録
+    $("#del").on("click", function () {
+      remove(ref(db,"chat/-NXO1Kg6RUsb6EhHycyp"));
     });
 
 
@@ -74,8 +75,15 @@
       var h = $("<h1></h1>")
       .text("ID: " + key + ", Message: " + msg.text)
       .attr('id', key)
-      .on('mouseenter', function(dbRef) {
-        dbRef.equalTo(key).remove()
+      .on('mouseover', function(dbRef) {
+        remove(ref(db,"chat/"+ key));
+        // 要素をIDで特定
+        var element = document.getElementById(key);
+
+       // 要素が存在するかどうかを確認し、存在する場合に削除
+       if (element) {
+        element.parentNode.removeChild(element);
+      }
       });
       $("#outputarea").append(h); //#outputの最後に追加
     });
